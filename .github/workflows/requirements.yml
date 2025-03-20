@@ -1,43 +1,43 @@
 name: Terraform CI
 on:
-    pull_request:
-        branches:
-        - master  
+  pull_request:
+    branches:
+      - master  
 
 jobs:
-    terraform:
+  terraform:
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout código
-          uses: actions/checkout@v4
+      - name: Checkout código
+        uses: actions/checkout@v4
 
-        - name: Configurar credenciales de AWS
-          uses: aws-actions/configure-aws-credentials@v3
-          with:
-            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            aws-region: ${{ secrets.AWS_REGION }}
+      - name: Configurar credenciales de AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-        - name: Instalar Terraform
-          uses: hashicorp/setup-terraform@v3
-          with:
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
           terraform_version: latest
 
-        - name: Inicializar Terraform
-          run: terraform init
+      - name: Inicializar Terraform
+        run: terraform init
 
-        - name: Validar Terraform
-          run: terraform validate
+      - name: Validar Terraform
+        run: terraform validate
 
-        - name: Plan de Terraform
-          run: terraform plan -out=tfplan
+      - name: Plan de Terraform
+        run: terraform plan -out=tfplan
 
-        - name: Guardar Plan
-          uses: actions/upload-artifact@v4
-          with:
-            name: terraform-plan
-            path: tfplan
+      - name: Guardar Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: tfplan
 
-        - name: Aplicar Terraform (requiere aprobación)
-          run: terraform apply -auto-approve tfplan
-          if: github.event_name == 'workflow_dispatch'
+      - name: Aplicar Terraform (requiere aprobación)
+        run: terraform apply -auto-approve tfplan
+        if: github.event_name == 'workflow_dispatch'
