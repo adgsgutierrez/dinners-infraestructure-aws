@@ -1,6 +1,6 @@
 name: Terraform CI
 on:
-  pull_request:
+  push:
     branches:
       - master  
 
@@ -40,4 +40,3 @@ jobs:
 
       - name: Aplicar Terraform (requiere aprobación)
         run: terraform apply -auto-approve tfplan
-        if: github.event_name == 'workflow_dispatch'
