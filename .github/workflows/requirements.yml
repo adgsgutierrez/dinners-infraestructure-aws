@@ -1,6 +1,6 @@
 name: Terraform CI
 on:
-  push:
+  pull-request:
     branches:
       - master  
 
@@ -37,6 +37,3 @@ jobs:
         with:
           name: terraform-plan
           path: tfplan
-
-      - name: Aplicar Terraform (requiere aprobación)
-        run: terraform apply -auto-approve tfplan
