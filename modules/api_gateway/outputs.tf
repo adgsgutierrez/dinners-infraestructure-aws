@@ -5,5 +5,5 @@ output "api_gateway_id" {
 
 output "api_gateway_invoke_url" {
   description = "URL base del API Gateway"
-  value       = aws_api_gateway_deployment.deployment.invoke_url
+  value       = length(aws_api_gateway_deployment.invoke_url) > 0 ? aws_api_gateway_deployment.invoke_url[0].arn : null
 }
