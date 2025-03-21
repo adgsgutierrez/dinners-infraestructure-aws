@@ -7,8 +7,8 @@ module "vpc" {
 
 module "ldb_notifications_function" {
   source                = "./modules/lambda"
+  iam_role_name         = "iam-lbd-role-execution-secure"
   lambda_name           = "ldb-notifications-function"
-  lambda_role_name      = "lambda-role-execution"
   environment_variables = {}
   vpc_id                = module.vpc.vpc_id
   subnet_ids            = [module.vpc.private_subnet_1_id]
@@ -16,8 +16,8 @@ module "ldb_notifications_function" {
 
 module "ldb_documentation_function" {
   source                = "./modules/lambda"
+  iam_role_name         = "iam-lbd-role-execution-secure"
   lambda_name           = "ldb-documentation-function"
-  lambda_role_name      = "lambda-role-execution"
   environment_variables = {}
   vpc_id                = module.vpc.vpc_id
   subnet_ids            = [module.vpc.private_subnet_1_id]

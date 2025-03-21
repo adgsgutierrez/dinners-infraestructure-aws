@@ -1,23 +1,3 @@
-resource "aws_iam_role" "lambda_role" {
-  name = var.lambda_role_name
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      }
-    }]
-  })
-
-  # 🔹 Evita que Terraform intente destruir el Role
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "aws_security_group" "lambda_sg" {
   name        = "${var.lambda_name}-sg"
   description = "Permitir tráfico interno para Lambda"
@@ -36,12 +16,6 @@ resource "aws_security_group" "lambda_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-resource "aws_iam_policy_attachment" "lambda_logs" {
-  name       = "lambda-logs-attachment"
-  roles      = [aws_iam_role.lambda_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_lambda_function" "lambda_function" {
