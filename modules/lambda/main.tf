@@ -44,8 +44,8 @@ resource "aws_lambda_function" "lambda_function" {
   role             = aws_iam_role.lambda_role.arn
   handler          = "index.handler"
   runtime          = "Node18.x"
-  filename         = "./../templates/nodejs.zip"
-  source_code_hash = filebase64sha256("./../templates/nodejs.zip")
+  filename         = "templates/nodejs.zip"
+  source_code_hash = filebase64sha256("templates/nodejs.zip")
   timeout          = 26000
   memory_size      = 128
 
