@@ -18,8 +18,15 @@ resource "aws_security_group" "lambda_sg" {
   }
 }
 
+# 🔍 Buscar Lambda existente por nombre
+data "aws_lambda_function" "existing_lambda" {
+  function_name = var.lambda_name
+}
+
+# 🏗️ Crear Lambda solo si NO existe
 resource "aws_lambda_function" "lambda_function" {
-  function_name    = var.lambda_name
+  count             = length(data.aws_lambda_function.existing_lambda.arn) > 0 ? 0 : 1
+  function_name     = var.lambda_name
   role             = length(aws_iam_role.lambda_role) > 0 ? aws_iam_role.lambda_role[0].arn : data.aws_iam_role.existing_lambda_role.arn
   handler          = "index.handler"
   runtime          = "nodejs18.x"
