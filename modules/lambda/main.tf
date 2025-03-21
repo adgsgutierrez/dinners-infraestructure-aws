@@ -20,7 +20,7 @@ resource "aws_security_group" "lambda_sg" {
 
 resource "aws_lambda_function" "lambda_function" {
   function_name    = var.lambda_name
-  role             = aws_iam_role.lambda_role.arn
+  role             = length(aws_iam_role.lambda_role) > 0 ? aws_iam_role.lambda_role[0].arn : data.aws_iam_role.existing_lambda_role.arn
   handler          = "index.handler"
   runtime          = "nodejs18.x"
   filename         = "templates/nodejs.zip"

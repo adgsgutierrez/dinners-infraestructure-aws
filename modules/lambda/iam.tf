@@ -40,6 +40,7 @@ resource "aws_iam_policy" "lambda_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = aws_iam_policy.lambda_policy.arn
+  count      = length(aws_iam_role.lambda_role) > 0 ? 1 : 0
+  role       = aws_iam_role.lambda_role[0].name
+  policy_arn = aws_iam_policy.lambda_policy[0].arn
 }
