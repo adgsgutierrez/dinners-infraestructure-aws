@@ -1,6 +1,6 @@
 resource "aws_security_group" "lambda_sg" {
   name        = "${var.lambda_name}-sg"
-  description = "Permitir tráfico interno para Lambda"
+  description = "Allow internal traffic for Lambda"
   vpc_id      = var.vpc_id
 
   ingress {
