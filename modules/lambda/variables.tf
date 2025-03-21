@@ -1,10 +1,10 @@
-variable "lambda_name" {
-  description = "Nombre de la función Lambda"
+variable "iam_role_name" {
+  description = "Nombre del IAM Role para la Lambda"
   type        = string
 }
 
-variable "lambda_role_name" {
-  description = "Nombre del rol IAM para la Lambda"
+variable "lambda_name" {
+  description = "Nombre de la función Lambda"
   type        = string
 }
 
