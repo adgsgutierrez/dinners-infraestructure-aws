@@ -1,9 +1,4 @@
-data "aws_iam_role" "existing_lambda_role" {
-  name = var.lambda_role_name
-}
-
 resource "aws_iam_role" "lambda_role" {
-  count = length(data.aws_iam_role.existing_lambda_role.arn) > 0 ? 0 : 1
   name = var.lambda_role_name
 
   assume_role_policy = jsonencode({
