@@ -10,9 +10,5 @@ output "lambda_security_group_id" {
 
 output "lambda_role_arn" {
   description = "ARN del IAM Role de la Lambda"
-  value       = aws_iam_role.lambda_role.arn
-}
-
-output "lambda_role_arn" {
   value = length(aws_iam_role.lambda_role) > 0 ? aws_iam_role.lambda_role[0].arn : data.aws_iam_role.existing_lambda_role.arn
 }
