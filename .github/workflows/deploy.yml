@@ -23,6 +23,12 @@ jobs:
         with:
           terraform_version: latest
 
+      - name: Inicializar Terraform
+        run: terraform init
+
+      - name: Validar Terraform
+        run: terraform validate
+
       - name: Plan de Terraform
         run: terraform plan -out=tfplan
 
