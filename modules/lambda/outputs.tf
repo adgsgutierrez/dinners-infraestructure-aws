@@ -1,6 +1,6 @@
 output "lambda_function_arn" {
   description = "ARN de la función Lambda"
-  value       = aws_lambda_function.lambda_function.arn
+  value       = length(aws_lambda_function.lambda_function) > 0 ? aws_lambda_function.lambda_function[0].arn : null
 }
 
 output "lambda_security_group_id" {
@@ -10,5 +10,5 @@ output "lambda_security_group_id" {
 
 output "lambda_role_arn" {
   description = "ARN del IAM Role de la Lambda"
-  value = length(aws_iam_role.lambda_role) > 0 ? aws_iam_role.lambda_role[0].arn : data.aws_iam_role.existing_lambda_role.arn
+  value       = length(aws_iam_role.lambda_role) > 0 ? aws_iam_role.lambda_role[0].arn : data.aws_iam_role.existing_lambda_role.arn
 }
