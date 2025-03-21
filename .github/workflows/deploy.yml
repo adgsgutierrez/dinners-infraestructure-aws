@@ -1,6 +1,6 @@
 name: Terraform CI
 on:
-  pull_request:
+  push:
     branches:
       - master  
 
@@ -23,12 +23,6 @@ jobs:
         with:
           terraform_version: latest
 
-      - name: Inicializar Terraform
-        run: terraform init
-
-      - name: Validar Terraform
-        run: terraform validate
-
       - name: Plan de Terraform
         run: terraform plan -out=tfplan
 
@@ -37,3 +31,6 @@ jobs:
         with:
           name: terraform-plan
           path: tfplan
+
+      - name: Aplicar Terraform (requiere aprobación)
+        run: terraform apply -auto-approve tfplan
