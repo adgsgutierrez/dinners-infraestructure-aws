@@ -11,6 +11,11 @@ resource "aws_iam_role" "lambda_role" {
       }
     }]
   })
+
+  # 🔹 Evita que Terraform intente destruir el Role
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_security_group" "lambda_sg" {
