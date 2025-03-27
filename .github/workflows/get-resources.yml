@@ -27,26 +27,19 @@ jobs:
     
       - name: verify secrets
         run: |
-          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+          if [ -z "${{ AWS_ACCESS_KEY_ID }}" ]; then
             echo "El secreto AWS_ACCESS_KEY_ID no está configurado." >&2
             exit 1
-          else
-            echo "El secreto AWS_ACCESS_KEY_ID está configurado correctamente."
           fi
-
-          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+          if [ -z "${{ AWS_SECRET_ACCESS_KEY }}" ]; then
             echo "El secreto AWS_SECRET_ACCESS_KEY no está configurado." >&2
             exit 1
-          else
-            echo "El secreto AWS_SECRET_ACCESS_KEY está configurado correctamente."
           fi
-
-          if [ -z "${{ secrets.AWS_REGION }}" ]; then
+          if [ -z "${{ AWS_REGION }}" ]; then
             echo "El secreto AWS_REGION no está configurado." >&2
             exit 1
-          else
-            echo "El secreto AWS_REGION está configurado correctamente."
           fi
+          echo "Todos los secretos están configurados correctamente."
 
       - name: 🔑 Configurar credenciales AWS
         uses: aws-actions/configure-aws-credentials@v3
