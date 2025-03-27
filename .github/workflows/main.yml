@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master 
+  pull_request:
+    branches:
+      - master
 
 jobs:
   get-resources:
@@ -19,4 +22,9 @@ jobs:
 
   terraform-deploy:
     needs: terraform-import
+    uses: ./.github/workflows/terraform-validations.yml
+
+  terraform-deploy:
+    needs: terraform-import
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     uses: ./.github/workflows/terraform-deploy.yml

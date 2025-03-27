@@ -23,15 +23,3 @@ jobs:
 
       - name: Validar Terraform
         run: terraform validate
-
-      - name: Plan de Terraform
-        run: terraform plan -out=tfplan
-
-      - name: Guardar Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-plan
-          path: tfplan
-
-      - name: Aplicar Terraform
-        run: terraform apply -auto-approve tfplan
