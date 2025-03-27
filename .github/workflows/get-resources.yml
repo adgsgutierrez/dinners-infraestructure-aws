@@ -24,9 +24,6 @@ jobs:
     steps:
       - name: 🛒 Descargar código del repositorio
         uses: actions/checkout@v4
-    
-      - name: verify secrets
-        run: env | sort
 
       - name: 🔑 Configurar credenciales AWS
         uses: aws-actions/configure-aws-credentials@v3
