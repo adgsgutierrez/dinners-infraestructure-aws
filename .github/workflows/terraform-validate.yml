@@ -1,29 +1,24 @@
-name: Terraform CI
+name: Aplicar Terraform
+
 on:
-  push:
-    branches:
-      - master  
+  workflow_call:
 
 jobs:
-  terraform:
+  terraform-apply:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout código
+      - name: 🛒 Descargar código del repositorio
         uses: actions/checkout@v4
 
-      - name: Configurar credenciales de AWS
-        uses: aws-actions/configure-aws-credentials@v3
+      - name: 🔑 Configurar credenciales AWS
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Instalar Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: latest
-
-      - name: Inicializar Terraform
+          
+      - name: Configurar Terraform
         run: terraform init
 
       - name: Validar Terraform
@@ -38,5 +33,6 @@ jobs:
           name: terraform-plan
           path: tfplan
 
-      - name: Aplicar Terraform (requiere aprobación)
+      - name: Aplicar Terraform
         run: terraform apply -auto-approve tfplan
+        if: github.ref == 'refs/heads/master'

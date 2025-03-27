@@ -1,0 +1,44 @@
+name: Obtener IDs de Recursos AWS
+
+on:
+  workflow_call:
+    outputs:
+      api_id:
+        description: "ID del API Gateway"
+        value: ${{ jobs.get-resources.outputs.api_id }}
+      vpc_id:
+        description: "ID de la VPC"
+        value: ${{ jobs.get-resources.outputs.vpc_id }}
+      lambda_arns:
+        description: "ARNs de las funciones Lambda"
+        value: ${{ jobs.get-resources.outputs.lambda_arns }}
+
+jobs:
+  get-resources:
+    runs-on: ubuntu-latest
+    outputs:
+      api_id: ${{ steps.export-vars.outputs.api_id }}
+      vpc_id: ${{ steps.export-vars.outputs.vpc_id }}
+      lambda_arns: ${{ steps.export-vars.outputs.lambda_arns }}
+
+    steps:
+      - name: 🛒 Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: 🔑 Configurar credenciales AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Obtener IDs de Recursos
+        id: export-vars
+        run: |
+          API_ID=$(aws apigateway get-rest-apis --query "items[?starts_with(name, 'ldb-')].id" --output text)
+          VPC_ID=$(aws ec2 describe-vpcs --filters "Name=tag:Environment,Values=dev" --query "Vpcs[0].VpcId" --output text)
+          LAMBDA_ARNS=$(aws lambda list-functions --query "Functions[?starts_with(FunctionName, 'ldb-')].FunctionArn" --output text)
+
+          echo "api_id=$API_ID" >> $GITHUB_ENV
+          echo "vpc_id=$VPC_ID" >> $GITHUB_ENV
+          echo "lambda_arns=$LAMBDA_ARNS" >> $GITHUB_ENV

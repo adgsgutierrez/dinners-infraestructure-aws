@@ -1,6 +1,6 @@
 output "vpc_id" {
   description = "ID de la VPC creada"
-  value       = aws_vpc.this.id
+  value       = length(aws_vpc.this) > 0 ? aws_vpc.this[0].id : null
 }
 
 output "private_subnet_1_id" {
