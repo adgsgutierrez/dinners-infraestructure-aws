@@ -20,7 +20,7 @@ jobs:
       vpc_id: ${{ needs.get-resources.outputs.vpc_id }}
       lambda_arns: ${{ needs.get-resources.outputs.lambda_arns }}
 
-  terraform-deploy:
+  terraform-validate:
     needs: terraform-import
     uses: ./.github/workflows/terraform-validations.yml
 
