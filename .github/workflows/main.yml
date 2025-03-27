@@ -1,0 +1,18 @@
+name: Deploy AWS Infraestructura
+
+on:
+  push:
+    branches:
+      - master 
+
+jobs:
+  get-resources:
+    uses: ./.github/workflows/get-resources.yml
+
+  terraform-import:
+    needs: get-resources
+    uses: ./.github/workflows/terraform-import.yml
+
+  terraform-deploy:
+    needs: terraform-import
+    uses: ./.github/workflows/terraform-deploy.yml
