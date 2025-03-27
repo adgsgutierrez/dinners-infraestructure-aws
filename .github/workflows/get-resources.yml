@@ -27,9 +27,9 @@ jobs:
     
       - name: verify secrets
         run: |
-        echo "aws-access-key-id=$AWS_ACCESS_KEY_ID" >> $secrets
-        echo "aws-secret-access-key=$AWS_SECRET_ACCESS_KEY" >> $secrets
-        echo "aws-region=$AWS_REGION" >> $secrets 
+        echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+        echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        echo ${{ secrets.AWS_REGION }}
 
       - name: 🔑 Configurar credenciales AWS
         uses: aws-actions/configure-aws-credentials@v3
