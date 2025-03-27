@@ -12,6 +12,10 @@ jobs:
   terraform-import:
     needs: get-resources
     uses: ./.github/workflows/terraform-import.yml
+    with:
+      api_id: ${{ needs.get-resources.outputs.api_id }}
+      vpc_id: ${{ needs.get-resources.outputs.vpc_id }}
+      lambda_arns: ${{ needs.get-resources.outputs.lambda_arns }}
 
   terraform-deploy:
     needs: terraform-import
