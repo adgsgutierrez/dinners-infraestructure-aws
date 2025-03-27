@@ -4,19 +4,31 @@ on:
   push:
     branches:
       - master 
+  pull_request:
+    branches:
+      - master
 
 jobs:
   get-resources:
     uses: ./.github/workflows/get-resources.yml
+    secrets: inherit
 
   terraform-import:
     needs: get-resources
+    secrets: inherit
     uses: ./.github/workflows/terraform-import.yml
     with:
       api_id: ${{ needs.get-resources.outputs.api_id }}
       vpc_id: ${{ needs.get-resources.outputs.vpc_id }}
       lambda_arns: ${{ needs.get-resources.outputs.lambda_arns }}
 
+  terraform-validate:
+    needs: terraform-import
+    secrets: inherit
+    uses: ./.github/workflows/terraform-validations.yml
+
   terraform-deploy:
     needs: terraform-import
+    secrets: inherit
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     uses: ./.github/workflows/terraform-deploy.yml
