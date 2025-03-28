@@ -52,7 +52,18 @@ jobs:
             terraform import module.lambda["$FUNC_NAME"].aws_lambda_function.lambda_function $ARN
           done
 
+      - name: Verificar estado de Terraform
+        run: |
+            if [ ! -f terraform.tfstate ]; then
+              echo "El archivo terraform.tfstate no existe."
+              exit 1
+            fi
+
       - name: Save Terraform State
         run: |
-          mkdir -p $GITHUB_WORKSPACE/terraform-state
-          cp terraform.tfstate $GITHUB_WORKSPACE/terraform-state/
+          if [ -f terraform.tfstate ]; then
+            mkdir -p $GITHUB_WORKSPACE/terraform-state
+            cp terraform.tfstate $GITHUB_WORKSPACE/terraform-state/
+          else
+            echo "El archivo terraform.tfstate no existe, omitiendo copia."
+          fi
