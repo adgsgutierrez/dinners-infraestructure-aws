@@ -22,9 +22,14 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: latest
+
       - name: Restore Terraform State
         run: |
-          cp $GITHUB_WORKSPACE/terraform-state/terraform.tfstate .
+          if [ -f $GITHUB_WORKSPACE/terraform-state/terraform.tfstate ]; then
+            cp $GITHUB_WORKSPACE/terraform-state/terraform.tfstate .
+          else
+            echo "Se omitió la restauración del estado remoto."
+          fi
           
       - name: Limpiar entorno
         run: |
