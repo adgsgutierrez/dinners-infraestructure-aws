@@ -22,7 +22,20 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: latest
+
+      - name: Restore Terraform State
+        run: |
+          if [ -f $GITHUB_WORKSPACE/terraform-state/terraform.tfstate ]; then
+            cp $GITHUB_WORKSPACE/terraform-state/terraform.tfstate .
+          else
+            echo "Se omitió la restauración del estado remoto."
+          fi
           
+      - name: Limpiar entorno
+        run: |
+          rm -rf $GITHUB_WORKSPACE/terraform-state
+          echo "Entorno limpio: archivos temporales eliminados."
+
       - name: Configurar Terraform
         run: terraform init
 
@@ -40,3 +53,8 @@ jobs:
 
       - name: Aplicar Terraform
         run: terraform apply -auto-approve tfplan
+      
+      - name: Limpiar entorno después del despliegue
+        run: |
+          rm -rf terraform.tfstate
+          echo "Archivos de estado eliminados después del despliegue."

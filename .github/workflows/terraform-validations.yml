@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  terraform-apply:
+  terraform-validations:
     runs-on: ubuntu-latest
 
     steps:
