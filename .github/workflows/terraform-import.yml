@@ -51,6 +51,19 @@ jobs:
             FUNC_NAME=$(echo $ARN | awk -F: '{print $NF}')
             terraform import module.lambda["$FUNC_NAME"].aws_lambda_function.lambda_function $ARN
           done
+      - name: Validar API Gateway
+        run: |
+          aws apigateway get-rest-api --rest-api-id ${{ inputs.api_id }} --region ${{ secrets.AWS_REGION }}
+  
+      - name: Validar VPC
+        run: |
+          aws ec2 describe-vpcs --vpc-ids ${{ inputs.vpc_id }} --region ${{ secrets.AWS_REGION }}
+  
+      - name: Validar Lambda Functions
+        run: |
+          for ARN in ${{ inputs.lambda_arns }}; do
+            aws lambda get-function --function-name $(echo $ARN | awk -F: '{print $NF}') --region ${{ secrets.AWS_REGION }}
+          done
 
       - name: Verificar estado de Terraform
         run: |
